@@ -70,15 +70,15 @@ Thinking and effort may be separate controls in some environments. Recommend onl
 **Model constraints (current API, October 2026):**
 - **Opus 5.5** always thinks: thinking cannot be turned off at any effort level. Do not recommend Thinking Off for it; lower the effort to Low instead.
 - **Sonnet 5.5** and **Haiku 5.5** can turn thinking off only at Low, Medium, or High effort. At Extra and Max, thinking stays on.
-- **Sonnet 5.5** recalibrated its effort levels and defaults to High. For agentic coding and multi-step tool use, Medium is a reasonable starting point.
+- **Sonnet 5.5** recalibrated its effort levels and defaults to High. For agentic coding and multi-step tool use, default to Medium; keep High for complex coding and hard debugging.
 
 **Effort (when thinking is on):**
 
 | Effort | Use when |
 |---|---|
 | **Low** | Mechanical, deterministic, well-specified. |
-| **Medium** | Routine task with one clear path (standard caption, simple script, clean data edit). |
-| **High** | Real coding, familiar debugging, multi-step but well-understood work. This is the realistic default for most of the user's work. |
+| **Medium** | Routine task with one clear path (standard caption, simple script, clean data edit). Default for agentic coding on Sonnet 5.5 (multi-step tool use, where the model runs and checks code itself). |
+| **High** | Complex coding, hard or unfamiliar debugging, high-stakes multi-step work. |
 | **Extra** | Hard debugging, ambiguous problems, multi-constraint design, large refactors. |
 | **Max** | Novel or research-grade reasoning, high-stakes correctness. Recommend rarely. |
 
