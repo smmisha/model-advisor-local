@@ -7,10 +7,10 @@ description: Recommends the most token-efficient Claude setup (model + effort le
 
 Pick the cheapest Claude configuration that still does the job well, then let the user decide whether to switch before running. The point is token economy: do not default to Opus or Max "to be safe" — recommend the lightest setup that the task signals actually justify.
 
-Model examples from the original local configuration (not a verified current catalog):
-- **Haiku 4.5** — fastest, cheapest. Quick, mechanical, well-specified work.
-- **Sonnet 4.6** — the everyday workhorse and the default choice for most real tasks.
-- **Opus 4.8** — only for genuinely hard, ambiguous, novel, or high-stakes work.
+Model examples as of October 2026 (verify against the models your app shows):
+- **Haiku 5.5** (`claude-haiku-5-5`) — fastest, cheapest. Quick, mechanical, well-specified work.
+- **Sonnet 5.5** (`claude-sonnet-5-5`) — the everyday workhorse and the default choice for most real tasks.
+- **Opus 5.5** (`claude-opus-5-5`) — only for genuinely hard, ambiguous, novel, or high-stakes work.
 
 Controls to recommend: **model**, **effort** (Low / Medium / High / Extra / Max), **thinking** (on/off). Plus optional flags: features, modes, chat-splitting.
 
@@ -55,9 +55,9 @@ Score the task against these signals. Most tasks land on Sonnet; push up or down
 
 | Model | Use when |
 |---|---|
-| **Haiku 4.5** | Task is trivial or mechanical and speed matters more than depth. |
-| **Sonnet 4.6** | Default. Standard coding (scripts, Playwright, pandas, openpyxl), SMM content generation, moderate catalog processing, debugging with a clear error, drafting docs. If unsure between Sonnet and Opus, start with Sonnet. |
-| **Opus 4.8** | Genuinely complex: architecture, large refactors, ambiguous multi-constraint problems, novel tooling, deep root-cause debugging, anything where correctness is high-stakes. |
+| **Haiku 5.5** | Task is trivial or mechanical and speed matters more than depth. |
+| **Sonnet 5.5** | Default. Standard coding (scripts, Playwright, pandas, openpyxl), SMM content generation, moderate catalog processing, debugging with a clear error, drafting docs. If unsure between Sonnet and Opus, start with Sonnet. |
+| **Opus 5.5** | Genuinely complex: architecture, large refactors, ambiguous multi-constraint problems, novel tooling, deep root-cause debugging, anything where correctness is high-stakes. |
 
 ### Step 4 — Pick effort + thinking
 
@@ -66,6 +66,11 @@ Thinking and effort may be separate controls in some environments. Recommend onl
 **Thinking:**
 - **Off** — only for truly mechanical tasks where reasoning just burns tokens (typography fix, trivial reformat, one-line lookup).
 - **On** — everything substantive: any logic, planning, debugging, design, or content that needs structure.
+
+**Model constraints (current API, October 2026):**
+- **Opus 5.5** always thinks: thinking cannot be turned off at any effort level. Do not recommend Thinking Off for it; lower the effort to Low instead.
+- **Sonnet 5.5** and **Haiku 5.5** can turn thinking off only at Low, Medium, or High effort. At Extra and Max, thinking stays on.
+- **Sonnet 5.5** recalibrated its effort levels and defaults to High. For agentic coding and multi-step tool use, Medium is a reasonable starting point.
 
 **Effort (when thinking is on):**
 
@@ -101,7 +106,7 @@ Print the verdict as a fenced block so it is scannable, give a one to two line r
 ALWAYS use this template:
 
 ```
-МОДЕЛЬ:    <Haiku 4.5 | Sonnet 4.6 | Opus 4.8>
+МОДЕЛЬ:    <Haiku 5.5 | Sonnet 5.5 | Opus 5.5>
 EFFORT:    <Low | Medium | High | Extra | Max>
 THINKING:  <Вкл | Выкл>
 ———
@@ -126,7 +131,7 @@ Do not start the task until the user answers. If they say proceed, continue in t
 Input: «Напиши Playwright-скрипт, который собирает комментарии с 4 Instagram-аккаунтов»
 Output:
 ```
-МОДЕЛЬ:    Sonnet 4.6
+МОДЕЛЬ:    Sonnet 5.5
 EFFORT:    High
 THINKING:  Вкл
 ———
@@ -135,14 +140,14 @@ THINKING:  Вкл
 ЧАТЫ:      Один чат
 ———
 ПОЧЕМУ:    Знакомый стек, одна чёткая задача. Opus избыточен,
-           Haiku не вытянет логику обхода аккаунтов.
+           Haiku для логики обхода аккаунтов рискован.
 ```
 
 **Example 2 — trivial fix**
 Input: «Поправь типографику в этом посте»
 Output:
 ```
-МОДЕЛЬ:    Haiku 4.5
+МОДЕЛЬ:    Haiku 5.5
 EFFORT:    Low
 THINKING:  Выкл
 ———
@@ -158,7 +163,7 @@ THINKING:  Выкл
 Input: «Спроектируй архитектуру тула для нормализации каталога на 50к строк в пяти языках»
 Output:
 ```
-МОДЕЛЬ:    Opus 4.8
+МОДЕЛЬ:    Opus 5.5
 EFFORT:    Extra
 THINKING:  Вкл
 ———
@@ -175,7 +180,7 @@ THINKING:  Вкл
 Input: «Почему Electron-приложение крашится на внешнем мониторе»
 Output:
 ```
-МОДЕЛЬ:    Sonnet 4.6
+МОДЕЛЬ:    Sonnet 5.5
 EFFORT:    High
 THINKING:  Вкл
 ———
